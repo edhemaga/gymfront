@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://presyontest.herokuapp.com/";
+const url = "https://presyontest.herokuapp.com";
 
 //ITEMS ROUTES
 export const fetchItems = () => axios.get(`${url}/items`);

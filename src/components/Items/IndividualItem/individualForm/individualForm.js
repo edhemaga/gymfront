@@ -65,7 +65,7 @@ function IndividualForm({ item }) {
               paddingRight: 10,
               paddingBottom: 5,
               background: "white",
-              fontSize: 25,
+              fontSize: 15,
               borderBottom: "1px solid #031292",
             }}
             id={"size" + indx}
@@ -87,7 +87,7 @@ function IndividualForm({ item }) {
               paddingRight: 10,
               paddingBottom: 5,
               background: "white",
-              fontSize: 25,
+              fontSize: 15,
               borderBottom: "1px solid #031292",
             }}
             id={"color" + indx}

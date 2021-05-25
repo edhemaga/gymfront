@@ -64,7 +64,7 @@ function Basket() {
           <div style={{ minHeight: "90vh" }}>
             {/* if notloaded then loader else map */}
             {basketItems.map((item) => (
-              <Grid item className={classes.itemInBasket} xs={7}>
+              <Grid item className={classes.itemInBasket} xs={6}>
                 <h1>{item.name}</h1>
                 <img src={item.image} />
                 <h3>{item.size}</h3>

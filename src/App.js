@@ -38,7 +38,7 @@ function App() {
   /*---------------*/
   /* idle timer */
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 1000 * 15, //1000ms puta X
+    timeout: 1000 * 150, //1000ms puta X
     onIdle: handleOpen,
     onActive: handleClose,
     onAction: handleClose,
@@ -47,7 +47,7 @@ function App() {
   /*------------*/
   return (
     <Router>
-      <Container>
+      <Container style={{ height: 100, marginBottom: 10 }}>
         <Grid
           container
           direction="row"
@@ -71,7 +71,7 @@ function App() {
             </Grid>
             <Grid item xs={1}>
               <div>
-                <Link to="/items/basket">
+                <Link to="/items/basket" style={{marginBottom: 25}}>
                   <ShoppingCartIcon className={classes.icon}></ShoppingCartIcon>
                 </Link>
               </div>
@@ -114,22 +114,6 @@ function App() {
               }
             />
           </div>
-          <div onClick={closeModal}>
-            <img
-              style={{
-                alignSelf: "center",
-                marginLeft: "10vw",
-                marginRight: "10vw",
-                marginTop: "5vh",
-                marginBottom: "5vh",
-                width: "80vw",
-                height: "90vh",
-              }}
-              src={
-                "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?fit=crop&h=1000&mark=https%3A%2F%2Fassets.imgix.net%2F~text%3Fbg%3D80000000%26txt%3DFree%2BStock%2BPhotos%26txtalign%3Dcenter%26txtclr%3Dfff%26txtfont%3DAvenir-Heavy%26txtpad%3D20%26txtsize%3D120%26w%3D1300&markalign=center%2Cmiddle&txt=pexels.com&txtalign=center&txtclr=eeffffff&txtfont=Avenir-Heavy&txtshad=10&txtsize=60&w=1500"
-              }
-            />
-          </div>
         </Carousel>
       </Modal>
       {/* modal */}
@@ -143,9 +127,9 @@ function App() {
       </Container>
       <div
         style={{
-          height: "40px",
+          height: "30px",
           backgroundColor: "#181135",
-          margin: "100px 0 0 0",
+          margin: "0",
         }}
       ></div>
       <div

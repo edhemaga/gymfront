@@ -1,44 +1,40 @@
-import React, {useEffect} from 'react';
-import {Container, AppBar, Typography, Grow, Grid} from '@material-ui/core';
-import {useDispatch} from 'react-redux';
+import React, { useEffect } from "react";
+import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 
-import Form from '../Form/Form';
-import Items from '../Items/Items';
-import {getItems} from '../../actions/items';
+import Form from "../Form/Form";
+import Items from "../Items/Items";
+import { getItems } from "../../actions/items";
 
+function Home() {
+  const dispatch = useDispatch();
 
-function Home(){
-    const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getItems());
+  }, [dispatch]);
 
-    useEffect(()=>{
-      dispatch(getItems());
-    },[dispatch]);
-
-    return(
-
-        
-
-        <div >
-           
+  return (
+    <div>
       <Grow in>
         <Container>
-          <Grid container justify="space-between" alignItems="stretch" spacing={3}>
+          <Grid
+            container
+            justify="space-between"
+            alignItems="stretch"
+            spacing={3}
+          >
             <Grid item xs={12} sm={7}>
               <Items />
             </Grid>
             <Grid item xs={12} sm={4}>
-            <Form />
+              <Form />
               {/* <Form currentId={currentId} setCurrentId={setCurrentId} /> */}
             </Grid>
           </Grid>
-          
-            
-          
         </Container>
       </Grow>
-            
-        </div>
-    );
+    </div>
+  );
 }
 
 export default Home;

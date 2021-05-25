@@ -28,6 +28,15 @@ function IndividualItem({ match }) {
     setClickedItem(data);
   }
 
+  const renderCustomThumbs = () => {
+    const thumbList = clickedItem.selectedFile.map((image, i) => (
+      <div key={i}>
+        <img key={i} src={image} alt={image} height="70" />
+      </div>
+    ));
+    return thumbList;
+  };
+
   useEffect(() => {
     getItemById(searchId);
   }, []);
@@ -62,19 +71,23 @@ function IndividualItem({ match }) {
         >
           <Grid item xs={clickedItem.selectedFile.length}>
             <Carousel
-              dynamicHeight="true"
+              dynamicHeight={true}
               autoPlay
               interval="5000"
               transitionTime="100"
               infiniteLoop="true"
+              renderThumbs={renderCustomThumbs}
             >
               {clickedItem.selectedFile.map((image) => (
-                <div
-                  style={{
-                    height: "100%",
-                  }}
-                >
-                  <img src={image} style={{ alignSelf: "center" }} />
+                <div style={{ height: 500 }}>
+                  <img
+                    src={image}
+                    style={{
+                      alignSelf: "center",
+                      height: "100%",
+                      width: "auto",
+                    }}
+                  />
                 </div>
               ))}
             </Carousel>

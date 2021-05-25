@@ -5,7 +5,7 @@ import {makeStyles} from '@material-ui/core/styles';
 export default makeStyles(()=>({
     appBar: {
         
-        margin: '1% 0 10% 0',
+        margin: '1% 0 2vh 0',
         display: 'flex',
         
         flexDirection: 'row',
