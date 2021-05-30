@@ -47,7 +47,6 @@ function Form() {
     e.forEach((image) => {
       imageArray.push(image.base64);
     });
-    console.log(imageArray);
     return imageArray;
   }
 
@@ -119,7 +118,7 @@ function Form() {
             onDone={(e) =>
               setItemData({ ...itemData, selectedFile: mapImages(e) })
             }
-          />{" "}
+          />
         </div>
 
         <Button

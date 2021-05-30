@@ -106,9 +106,8 @@ function IndividualForm({ item }) {
           size="large"
           type="submit"
           fullWidth
-          onClick={console.log(orderData)}
         >
-          Submit
+          Add to basket
         </Button>
       </form>
     </div>

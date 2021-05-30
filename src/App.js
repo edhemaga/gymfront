@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Container, AppBar, Grid } from "@material-ui/core";
+import { Container, AppBar, Grid, Button } from "@material-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import IndividualItem from "./components/Items/IndividualItem/IndividualItem";
 import useStyles from "./styles";
 import logo from "./images/presyonLogo.jpg";
@@ -11,6 +12,8 @@ import Basket from "./components/Basket/Basket";
 import Slideshow from "./components/slideshow/slideshow";
 import { Carousel } from "react-responsive-carousel";
 import { useIdleTimer } from "react-idle-timer";
+import { useHistory, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; //za ikonice
 // import { faPhone } from "@fortawesome/free-solid-svg-icons"; //za ikonice
@@ -21,6 +24,21 @@ import "./App.css";
 
 function App() {
   const classes = useStyles();
+  var dispatch = useDispatch();
+
+  window.onscroll = function () {
+    if (window.scrollY > 50) {
+      document.getElementById("navbar").style.borderBottom =
+        "3px solid #8f0114";
+      //#ee1111 //svijetlo crvena
+    } else {
+      document.getElementById("navbar").style.borderBottom =
+        "3px solid #01148F";
+    }
+  };
+
+  const history = useHistory();
+
   /*--- MODAL */
   const [open, setOpen] = React.useState(false);
 
@@ -38,7 +56,7 @@ function App() {
   /*---------------*/
   /* idle timer */
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 1000 * 150, //1000ms puta X
+    timeout: 1000 * 300, //1000ms puta X; bilo 15
     onIdle: handleOpen,
     onActive: handleClose,
     onAction: handleClose,
@@ -46,7 +64,7 @@ function App() {
   });
   /*------------*/
   return (
-    <Router>
+    <div>
       <Container style={{ height: 100, marginBottom: 10 }}>
         <Grid
           container
@@ -54,8 +72,31 @@ function App() {
           justify="space-between"
           alignItems="center"
         >
-          <AppBar className={classes.appBar} position="static" color="inherit">
-            <Grid item xs={1}></Grid>
+          <AppBar
+            id="navbar"
+            className={classes.appBar}
+            position="static"
+            color="inherit"
+            style={{
+              borderBottom: "3px solid #01148F",
+              position: "fixed",
+              top: 0,
+              left: "2%",
+              right: "2%",
+              width: "96%",
+            }}
+          >
+            <Grid item xs={1}>
+              <Link>
+                <ArrowBackIcon
+                  style={{ marginLeft: 50 }}
+                  className={classes.icon}
+                  onClick={() => {
+                    history.goBack();
+                  }}
+                ></ArrowBackIcon>
+              </Link>
+            </Grid>
             <Grid item xs={3}>
               <div>
                 <Link to="/">
@@ -71,7 +112,7 @@ function App() {
             </Grid>
             <Grid item xs={1}>
               <div>
-                <Link to="/items/basket" style={{marginBottom: 25}}>
+                <Link to="/items/basket" style={{ marginBottom: 25 }}>
                   <ShoppingCartIcon className={classes.icon}></ShoppingCartIcon>
                 </Link>
               </div>
@@ -117,22 +158,54 @@ function App() {
         </Carousel>
       </Modal>
       {/* modal */}
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        style={{ maxHeight: 600, height: "calc(100% - 30px)", paddingTop: 10 }}
+      >
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/:id" exact component={IndividualItem} />
-          <Route path="/items/basket" exact component={Basket} />
-          <Route path="/items/slideshow" exact component={Slideshow} />
+          <Route
+            path="/"
+            exact
+            component={Home}
+            onClick={() => {
+              this.history.push("/");
+            }}
+          />
+          <Route
+            path="/:id"
+            exact
+            component={IndividualItem}
+            onClick={() => {
+              this.history.push("/:id");
+            }}
+          />
+          <Route
+            path="/items/basket"
+            exact
+            component={Basket}
+            onClick={() => {
+              this.history.push("/items/basket");
+              console.log(history);
+            }}
+          />
+          <Route
+            path="/items/slideshow"
+            exact
+            component={Slideshow}
+            onClick={() => {
+              this.history.push("/items/slideshow");
+            }}
+          />
         </Switch>
       </Container>
-      <div
+      {/* <div
         style={{
           height: "30px",
           backgroundColor: "#181135",
           margin: "0",
         }}
-      ></div>
-      <div
+      ></div> */}
+      {/* <div
         style={{
           height: "150px",
           backgroundColor: "#21174B",
@@ -144,8 +217,8 @@ function App() {
         <div style={{ padding: 5 }}>Test testić d.o.o.</div>
         <div style={{ padding: 5 }}>Facebook Instagram</div>
         <div style={{ padding: 5 }}>Konakt email@emalić.ba</div>
-      </div>
-    </Router>
+      </div> */}
+    </div>
   );
 }
 

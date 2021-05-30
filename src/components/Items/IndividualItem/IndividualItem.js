@@ -52,16 +52,6 @@ function IndividualItem({ match }) {
     <CircularProgress />
   ) : (
     <div>
-      <div>
-        <Button
-          variant="outlined"
-          onClick={() => history.goBack()}
-          style={{ marginLeft: 25, marginBottom: 10 }}
-        >
-          Back
-        </Button>
-      </div>
-
       <Container>
         <Grid
           container
@@ -79,7 +69,7 @@ function IndividualItem({ match }) {
               renderThumbs={renderCustomThumbs}
             >
               {clickedItem.selectedFile.map((image) => (
-                <div style={{ height: 500 }}>
+                <div style={{ height: "50vh" }}>
                   <img
                     src={image}
                     style={{
