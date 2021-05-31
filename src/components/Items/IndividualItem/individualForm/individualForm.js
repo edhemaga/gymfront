@@ -5,14 +5,8 @@ import "./individualForm.css";
 import useStyles from "./styles";
 
 import { addToBasket } from "../../../../actions/purchases";
-import { Button } from "@material-ui/core";
-
-import Chip from "@material-ui/core/Chip";
-import { spacing } from "@material-ui/system";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-
-import { Link } from "react-router-dom";
+import { Button, Paper, Snackbar } from "@material-ui/core";
+import Modal from "@material-ui/core/Modal";
 
 function IndividualForm({ item }) {
   const dispatch = useDispatch();
@@ -23,6 +17,22 @@ function IndividualForm({ item }) {
     color: "",
     price: item.price,
   });
+
+  /*--- MODAL */
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function closeModal() {
+    setOpen(false);
+  }
+  /*---------------*/
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -106,10 +116,26 @@ function IndividualForm({ item }) {
           size="large"
           type="submit"
           fullWidth
+          onClick={handleOpen}
         >
           Add to basket
         </Button>
       </form>
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={2000}>
+        <p
+          style={{
+            background: "#3f4042",
+            color: "white",
+            paddingTop: 20,
+            paddingBottom: 20,
+            paddingLeft: 80,
+            paddingRight: 80,
+            borderRadius: 5,
+          }}
+        >
+          Uspješno ste dodali artikal u korpu!
+        </p>
+      </Snackbar>
     </div>
   );
 }

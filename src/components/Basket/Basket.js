@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { BrowserRouter as Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router-dom";
 import useStyles from "./styles";
-import {
-  Container,
-  Grow,
-  Grid,
-  CircularProgress,
-  Button,
-  TextField,
-  Paper,
-} from "@material-ui/core";
-
+import { Container, Grid, Button, TextField, Paper } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { checkout } from "../../actions/purchases";
 
 function Basket() {
   const classes = useStyles();
   var totalPrice = 0;
   var dispatch = useDispatch();
-  const history = useHistory();
   const basketItems = useSelector((state) => state.purchases);
   var item = null;
 
@@ -49,6 +41,15 @@ function Basket() {
     setPurchaseDetails({ ...purchaseDetails, price: totalPrice });
   };
 
+  function removeItem(item, itemIndx) {
+    basketItems.splice(itemIndx, 1);
+    setPurchaseDetails({
+      ...purchaseDetails,
+      items: basketItems,
+      price: purchaseDetails.price - item.price,
+    });
+  }
+
   return (
     <div>
       <Container>
@@ -66,7 +67,7 @@ function Basket() {
             }}
           >
             {/* if notloaded then loader else map */}
-            {basketItems.map((item) => (
+            {basketItems.map((item, indx) => (
               <Grid
                 item
                 className={classes.itemInBasket}
@@ -79,8 +80,18 @@ function Basket() {
                 <img src={item.image} style={{ width: "100%" }} />
                 <span style={{ display: "flex" }}>
                   <h2>
-                    <pre style={{ margin: 0, fontFamily: "Roboto" }}>
+                    <pre
+                      style={{
+                        margin: 0,
+                        fontFamily: "Roboto",
+                        display: "flex",
+                      }}
+                    >
                       {item.size} {item.color}
+                      <DeleteIcon
+                        onClick={() => removeItem(item, indx)}
+                        style={{ margin: "auto", color: "#8f0114" }}
+                      ></DeleteIcon>{" "}
                     </pre>
                   </h2>
                 </span>

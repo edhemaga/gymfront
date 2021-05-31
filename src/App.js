@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Container, AppBar, Grid, Button } from "@material-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import IndividualItem from "./components/Items/IndividualItem/IndividualItem";
 import useStyles from "./styles";
