@@ -1,15 +1,19 @@
 import React, { useState, useEffect, StyleSheet } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 import "./individualForm.css";
 import useStyles from "./styles";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Home from "@material-ui/icons/Home";
 
 import { addToBasket } from "../../../../actions/purchases";
-import { Button, Paper, Snackbar } from "@material-ui/core";
-import Modal from "@material-ui/core/Modal";
+import { Button, Snackbar, Slide } from "@material-ui/core";
 
 function IndividualForm({ item }) {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const [orderData, setOrderData] = useState({
     name: item.name,
     image: item.selectedFile[0],
@@ -20,8 +24,80 @@ function IndividualForm({ item }) {
 
   /*--- MODAL */
   const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState({
+    msg: "",
+    autoClose: 2000,
+    position: { vertical: "bottom", horizontal: "center" },
+  });
 
   const handleOpen = () => {
+    if (orderData.size != "" && orderData.color != "") {
+      setMessage({
+        ...message,
+        msg: (
+          <div
+            style={{
+              background: "#3f4042",
+              color: "white",
+              paddingTop: 20,
+              paddingBottom: 20,
+              paddingLeft: 80,
+              paddingRight: 80,
+              borderRadius: 5,
+            }}
+          >
+            <div>Uspješno ste dodali artikal u korpu!</div>
+            {/* <div style={{ display: "flex" }}>
+              <Link to="/">
+                <Button
+                    style={{ background: "white", color: "#3f4042" }}
+                    // variant="contained"
+                    size="large"
+                    type="submit"
+                    fullWidth
+                    onClick={handleOpen}
+                  >
+                <span
+                  style={{
+                    marginTop: 10,
+                    textAlign: "center",
+                    height: "fit",
+                    color: "white",
+                  }}
+                >
+                  <Home style={{ color: "white" }}></Home>
+                  Nazad na početnu
+                </span>
+                </Button>
+              </Link>
+            </div> */}
+          </div>
+        ),
+        autoClose: 1000,
+        position: { vertical: "bottom", horizontal: "center" },
+      });
+    } else {
+      setMessage({
+        ...message,
+        msg: (
+          <p
+            style={{
+              background: "#3f4042",
+              color: "white",
+              paddingTop: 20,
+              paddingBottom: 20,
+              paddingLeft: 80,
+              paddingRight: 80,
+              borderRadius: 5,
+            }}
+          >
+            Morate izabrati boju i veličinu artikla!
+          </p>
+        ),
+        autoClose: 2000,
+        position: { vertical: "bottom", horizontal: "center" },
+      });
+    }
     setOpen(true);
   };
 
@@ -29,18 +105,16 @@ function IndividualForm({ item }) {
     setOpen(false);
   };
 
-  function closeModal() {
-    setOpen(false);
-  }
   /*---------------*/
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    try {
-      dispatch(addToBasket(orderData));
-    } catch (error) {
-      console.log(error);
+    if (orderData.size != "" && orderData.color != "") {
+      try {
+        dispatch(addToBasket(orderData));
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   function setColorStyle(e, length) {
@@ -58,8 +132,6 @@ function IndividualForm({ item }) {
     }
     e.target.style.background = "#dbdbdb";
   }
-
-  const classes = useStyles();
 
   return (
     <div>
@@ -120,21 +192,27 @@ function IndividualForm({ item }) {
         >
           Add to basket
         </Button>
+
+        <Link to="/items/basket">
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+            fullWidth
+            style={{ marginTop: 20, background: "#52b202" }}
+          >
+            Završi kupovinu
+          </Button>
+        </Link>
       </form>
-      <Snackbar open={open} onClose={handleClose} autoHideDuration={2000}>
-        <p
-          style={{
-            background: "#3f4042",
-            color: "white",
-            paddingTop: 20,
-            paddingBottom: 20,
-            paddingLeft: 80,
-            paddingRight: 80,
-            borderRadius: 5,
-          }}
-        >
-          Uspješno ste dodali artikal u korpu!
-        </p>
+      <Snackbar
+        anchorOrigin={message.position}
+        open={open}
+        onClose={handleClose}
+        autoHideDuration={message.autoClose}
+      >
+        <span>{message.msg}</span>
       </Snackbar>
     </div>
   );

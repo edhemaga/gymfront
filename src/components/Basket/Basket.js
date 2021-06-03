@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter as Link } from "react-router-dom";
-import { useHistory, Redirect } from "react-router-dom";
 import useStyles from "./styles";
-import { Container, Grid, Button, TextField, Paper } from "@material-ui/core";
+import { Grid, Button, TextField, Paper } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { checkout } from "../../actions/purchases";
 

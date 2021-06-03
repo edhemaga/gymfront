@@ -9,6 +9,8 @@ import logo from "./images/presyonLogo.jpg";
 import Home from "./components/Home/Home";
 import Basket from "./components/Basket/Basket";
 import Slideshow from "./components/slideshow/slideshow";
+import Badge from "@material-ui/core/Badge";
+
 import { Carousel } from "react-responsive-carousel";
 import { useIdleTimer } from "react-idle-timer";
 import { useHistory, Redirect } from "react-router-dom";
@@ -35,7 +37,7 @@ function App() {
         "3px solid #01148F";
     }
   };
-
+  const basketItems = useSelector((state) => state.purchases);
   const history = useHistory();
 
   /*--- MODAL */
@@ -112,7 +114,15 @@ function App() {
             <Grid item xs={1}>
               <div>
                 <Link to="/items/basket" style={{ marginBottom: 25 }}>
-                  <ShoppingCartIcon className={classes.icon}></ShoppingCartIcon>
+                  <Badge
+                    className={classes.icon}
+                    badgeContent={basketItems.length}
+                    color="error"
+                  >
+                    <ShoppingCartIcon
+                      style={{ marginTop: 3, marginRight: 1 }}
+                    ></ShoppingCartIcon>
+                  </Badge>
                 </Link>
               </div>
             </Grid>
