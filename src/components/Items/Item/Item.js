@@ -7,7 +7,7 @@ function Item({ item }) {
 
   return (
     <div className={classes.indItem}>
-      <img className={classes.image} src={item.selectedFile[0]}></img>
+      <img className={classes.image} src={item.selectedFile[0]} style={{height:"40vh", objectFit: 'cover'}}></img>
       <div className={classes.aboutItem}>
         <h2 align="center" className={classes.itemName}>
           <b>{item.name}</b>

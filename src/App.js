@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, AppBar, Grid, Button } from "@material-ui/core";
+import { Container, AppBar, Grid, Button, MenuItem, Menu } from "@material-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -15,6 +15,7 @@ import { Carousel } from "react-responsive-carousel";
 import { useIdleTimer } from "react-idle-timer";
 import { useHistory, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import {switchGender} from './actions/selectedGender';
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; //za ikonice
 // import { faPhone } from "@fortawesome/free-solid-svg-icons"; //za ikonice
@@ -38,6 +39,8 @@ function App() {
     }
   };
   const basketItems = useSelector((state) => state.purchases);
+  const selectedGender = useSelector((state) => state.selectedGender);
+
   const history = useHistory();
 
   /*--- MODAL */
@@ -46,6 +49,14 @@ function App() {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const handleMen = () => {
+    dispatch(switchGender("M"));
+  }
+
+  const handleWomen = () => {
+    dispatch(switchGender("F"));
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -57,7 +68,7 @@ function App() {
   /*---------------*/
   /* idle timer */
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 1000 * 300, //1000ms puta X; bilo 15
+    timeout: 1000 * 60, //1000ms puta X; bilo 15
     onIdle: handleOpen,
     onActive: handleClose,
     onAction: handleClose,
@@ -99,6 +110,9 @@ function App() {
               </Link>
             </Grid>
             <Grid item xs={3}>
+
+            </Grid>
+            <Grid item xs={3}>
               <div>
                 <Link to="/">
                   <img
@@ -111,8 +125,14 @@ function App() {
                 </Link>
               </div>
             </Grid>
+            
+            <Grid item xs={2} style={{paddingTop: "20px", paddingLeft: "70px"}}>
+                  <Button onClick={handleMen}><b>Men</b></Button>
+                  <Button onClick={handleWomen}><b>Women</b></Button>
+            </Grid>
+
             <Grid item xs={1}>
-              <div>
+              <div stlye={{display: 'flex'}}>
                 <Link to="/items/basket" style={{ marginBottom: 25 }}>
                   <Badge
                     className={classes.icon}

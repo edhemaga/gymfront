@@ -18,3 +18,13 @@ export const checkout = (items) => async(dispatch)=>{
         console.log(error.message);
     }
 }
+
+
+export const deleteOne = (itemIndex) => async(dispatch)=>{
+    try{
+        dispatch({type: 'REMOVE_ONE', payload: itemIndex});
+    }catch(error){
+        console.log(error.message);
+    }
+}
+

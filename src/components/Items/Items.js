@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Item from "./Item/Item";
 import useStyles from "./styles";
 import { Grid, CircularProgress } from "@material-ui/core";
@@ -7,37 +7,52 @@ import { Link } from "react-router-dom";
 
 function Items() {
   const items = useSelector((state) => state.items);
+  const selectedGender = useSelector((state) => state.selectedGender);
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log(selectedGender);
+  }, [selectedGender]);
 
   return !items.length ? (
     <CircularProgress />
   ) : (
-    <Grid
+    <div
       className={classes.container}
-      container
-      alignItems="stretch"
-      spacing={0}
+      style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr'}}
     >
-      {items.map((item) => (
-        <Grid
-          xs={12}
-          sm={12}
-          key={item._id}
-          item
+      {selectedGender=="All" ? items.map((filteredItem) => (
+
+<div
+     key={filteredItem._id}
+     
+     style={{
+       margin: '15px auto',
+       width: "90%",
+     }}
+   >
+     <Link to={`/${filteredItem._id}`}>
+       <Item item={filteredItem} />
+     </Link>
+   </div>
+ )) : " "}
+      {items.filter(item => item.gender == selectedGender).map((filteredItem) => (
+
+     <div
+          key={filteredItem._id}
+          
           style={{
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 15,
-            marginBottom: 15,
-            width: "100%",
+            margin: '15px auto',
+            width: "90%",
           }}
         >
-          <Link to={`/${item._id}`}>
-            <Item item={item} />
+          <Link to={`/${filteredItem._id}`}>
+            <Item item={filteredItem} />
           </Link>
-        </Grid>
+        </div>
       ))}
-    </Grid>
+    </div>
+    
   );
 }
 

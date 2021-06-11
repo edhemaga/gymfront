@@ -6,6 +6,8 @@ export default (purchases=[], action) =>{
             return [...purchases, action.payload];
         case 'CHECKOUT':
             return [];
+        case 'REMOVE_ONE':
+            return purchases.filter((purchase) => (purchase !== action.payload));
         default:
             return purchases;
     }

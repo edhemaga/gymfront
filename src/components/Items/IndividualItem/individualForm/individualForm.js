@@ -1,6 +1,8 @@
 import React, { useState, useEffect, StyleSheet } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+
 
 import "./individualForm.css";
 import useStyles from "./styles";
@@ -22,6 +24,7 @@ function IndividualForm({ item }) {
     price: item.price,
   });
 
+  const history = useHistory();
   /*--- MODAL */
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState({
@@ -47,30 +50,7 @@ function IndividualForm({ item }) {
             }}
           >
             <div>Uspješno ste dodali artikal u korpu!</div>
-            {/* <div style={{ display: "flex" }}>
-              <Link to="/">
-                <Button
-                    style={{ background: "white", color: "#3f4042" }}
-                    // variant="contained"
-                    size="large"
-                    type="submit"
-                    fullWidth
-                    onClick={handleOpen}
-                  >
-                <span
-                  style={{
-                    marginTop: 10,
-                    textAlign: "center",
-                    height: "fit",
-                    color: "white",
-                  }}
-                >
-                  <Home style={{ color: "white" }}></Home>
-                  Nazad na početnu
-                </span>
-                </Button>
-              </Link>
-            </div> */}
+            
           </div>
         ),
         autoClose: 1000,
@@ -117,6 +97,20 @@ function IndividualForm({ item }) {
       }
     }
   }
+
+  function handleSubmitA(e) {
+    if (orderData.size != "" && orderData.color != "") {
+      try {
+        dispatch(addToBasket(orderData));
+        history.push('/items/basket');
+      } catch (error) {
+        console.log(error);
+      }
+    } else{
+      handleOpen();
+    }
+  }
+
   function setColorStyle(e, length) {
     for (var i = 0; i < length; i++) {
       var el = document.getElementById("color" + i);
@@ -193,8 +187,8 @@ function IndividualForm({ item }) {
           Add to basket
         </Button>
 
-        <Link to="/items/basket">
           <Button
+            onClick={(e)=> handleSubmitA(e) }
             variant="contained"
             color="primary"
             size="large"
@@ -204,7 +198,6 @@ function IndividualForm({ item }) {
           >
             Završi kupovinu
           </Button>
-        </Link>
       </form>
       <Snackbar
         anchorOrigin={message.position}

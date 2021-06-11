@@ -23,6 +23,10 @@ function IndividualItem({ match }) {
     colors: [],
   });
 
+  function returnNull(){
+    return "";
+  }
+
   async function getItemById(id) {
     const { data } = await fetchItem(id);
     setClickedItem(data);
@@ -30,8 +34,8 @@ function IndividualItem({ match }) {
 
   const renderCustomThumbs = () => {
     const thumbList = clickedItem.selectedFile.map((image, i) => (
-      <div key={i}>
-        <img key={i} src={image} alt={image} height="70" />
+      <div key={i} >
+        <img style={{objectFit: 'cover', height: "70px", width: "50px !important" }} key={i} src={image} alt={image} />
       </div>
     ));
     return thumbList;
@@ -52,20 +56,21 @@ function IndividualItem({ match }) {
     <CircularProgress />
   ) : (
     <div>
-      <Container>
+      <Container style={{overflow: 'hidden'}}>
         <Grid
           container
           justify="space-between"
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={clickedItem.selectedFile.length}>
+          <Grid item xs={6} style={{paddingTop: 20}}>
             <Carousel
               dynamicHeight={true}
               autoPlay
               interval="5000"
               transitionTime="100"
               infiniteLoop="true"
+              statusFormatter={returnNull}
               renderThumbs={renderCustomThumbs}
             >
               {clickedItem.selectedFile.map((image) => (

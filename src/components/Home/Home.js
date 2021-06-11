@@ -27,25 +27,12 @@ function Home() {
               item
               xs={12}
               sm={12}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              }}
+              
             >
-              <Items />
-              <Items />
-              <Items />
-              <Items />
-              <Items />
-              <Items />
-              <Items />
-              <Items />
-              <Items />
               <Items />
             </Grid>
             <Grid item xs={12} sm={4}>
-              {/* <Form /> */}
-              {/* <Form currentId={currentId} setCurrentId={setCurrentId} /> */}
+              <Form />
             </Grid>
           </Grid>
         </Container>

@@ -4,12 +4,17 @@ import { BrowserRouter as Link } from "react-router-dom";
 import useStyles from "./styles";
 import { Grid, Button, TextField, Paper } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { checkout } from "../../actions/purchases";
+import { checkout, deleteOne } from "../../actions/purchases";
+import Modal from "@material-ui/core/Modal";
+import ThankYou from '../../assets/ThankYou.png';
+import { useHistory, Redirect } from "react-router-dom";
 
 function Basket() {
   const classes = useStyles();
   var totalPrice = 0;
   var dispatch = useDispatch();
+  const history = useHistory();
+
   const basketItems = useSelector((state) => state.purchases);
   var item = null;
 
@@ -47,7 +52,24 @@ function Basket() {
       items: basketItems,
       price: purchaseDetails.price - item.price,
     });
+    dispatch(deleteOne(itemIndx));
   }
+
+    /*--- MODAL */
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    function closeModal() {
+      setOpen(false);
+    }
+    /*---------------*/
 
   return (
     <div>
@@ -136,6 +158,7 @@ function Basket() {
         <Grid>
           {/* <Paper className={classes.paper}> */}
           <form
+            style={{marginTop: 40, marginRight: 20}}
             autoComplete="off"
             noValidate
             onSubmit={makePurchase}
@@ -145,6 +168,7 @@ function Basket() {
               style={{
                 marginLeft: 10,
                 marginTop: 0,
+                width: "100%",
                 marginBottom: 0,
                 borderBottom: "2px solid #ebebeb",
               }}
@@ -152,6 +176,8 @@ function Basket() {
               Total price: {purchaseDetails.price}
             </h1>
             <TextField
+            
+              required
               name="name"
               variant="outlined"
               label="Name"
@@ -165,6 +191,7 @@ function Basket() {
               }
             />
             <TextField
+              required
               name="number"
               variant="outlined"
               label="Number"
@@ -178,6 +205,7 @@ function Basket() {
               }
             />
             <TextField
+              required
               name="number"
               variant="outlined"
               label="Email"
@@ -194,6 +222,7 @@ function Basket() {
               color="primary"
               variant="contained"
               type="submit"
+              onClick={handleOpen}
               className={classes.buttonSubmit}
             >
               PURCHASE
@@ -203,6 +232,30 @@ function Basket() {
         </Grid>
       </Grid>
       {/* </Container> */}
+      <Modal 
+                  onClick={() => {
+                    history.push("/");
+                  }}
+        style={{
+          width: "100wv",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        open={open}
+        onClose={handleClose}
+      ><div>                  
+      <img
+        src={ThankYou}
+        style={{
+          alignSelf: "center",
+          width: "60vw",
+        }}
+    />
+</div>
+       
+      </Modal>
     </div>
   );
 }
