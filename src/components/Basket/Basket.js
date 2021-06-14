@@ -58,7 +58,7 @@ function Basket() {
     setPurchaseDetails({
       ...purchaseDetails,
       items: basketItems,
-      price: purchaseDetails.price - item.price,
+      price: purchaseDetails.price - ((100 - item.discount) / 100) * item.price,
     });
     dispatch(deleteOne(itemIndx));
   }
