@@ -57,6 +57,10 @@ function App() {
     setOpen(true);
   };
 
+  const handleAll = () => {
+    dispatch(switchGender("All"));
+  };
+
   const handleMen = () => {
     dispatch(switchGender("M"));
   };
@@ -116,11 +120,12 @@ function App() {
                 ></ArrowBackIcon>
               </Link>
             </Grid>
-            <Grid item xs={3}></Grid>
+            <Grid item xs={2}></Grid>
             <Grid item xs={3}>
               <div>
                 <Link to="/">
                   <img
+                    onClick={handleAll}
                     className={classes.image}
                     src={logo}
                     align="center"
@@ -131,11 +136,7 @@ function App() {
               </div>
             </Grid>
 
-            <Grid
-              item
-              xs={3}
-              style={{ paddingTop: "20px", paddingLeft: "70px" }}
-            >
+            <Grid item xs={2} style={{ color: "#858585", paddingTop: 20 }}>
               <Button onClick={handleMen}>
                 <b>Men</b>
               </Button>

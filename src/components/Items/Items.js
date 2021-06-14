@@ -11,7 +11,6 @@ function Items() {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(selectedGender);
   }, [selectedGender]);
 
   return !items.length ? (

@@ -13,5 +13,8 @@ export default makeStyles((theme) => ({
   Black: {
     color: "black",
   },
-
+  icon: {
+    color: "#041593",
+    marginTop: "12px",
+  },
 }));

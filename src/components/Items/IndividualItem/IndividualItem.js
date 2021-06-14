@@ -19,11 +19,13 @@ function IndividualItem({ match }) {
 
   const [clickedItem, setClickedItem] = useState({
     name: "",
+    discount: 0,
+    reservation: false,
     sizes: [],
     colors: [],
   });
 
-  function returnNull(){
+  function returnNull() {
     return "";
   }
 
@@ -34,13 +36,21 @@ function IndividualItem({ match }) {
 
   const renderCustomThumbs = () => {
     const thumbList = clickedItem.selectedFile.map((image, i) => (
-      <div key={i} >
-        <img style={{objectFit: 'cover', height: "70px", width: "50px !important" }} key={i} src={image} alt={image} />
+      <div key={i}>
+        <img
+          style={{
+            objectFit: "cover",
+            height: "70px",
+            width: "50px !important",
+          }}
+          key={i}
+          src={image}
+          alt={image}
+        />
       </div>
     ));
     return thumbList;
   };
-
   useEffect(() => {
     getItemById(searchId);
   }, []);
@@ -53,17 +63,17 @@ function IndividualItem({ match }) {
   // })
 
   return !clickedItem.sizes.length ? (
-    <CircularProgress />
+    <CircularProgress style={{ display: "flex", margin: "auto" }} />
   ) : (
     <div>
-      <Container style={{overflow: 'hidden'}}>
+      <Container style={{ overflow: "hidden" }}>
         <Grid
           container
           justify="space-between"
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={6} style={{paddingTop: 20}}>
+          <Grid item xs={6} style={{ paddingTop: 20 }}>
             <Carousel
               dynamicHeight={true}
               autoPlay

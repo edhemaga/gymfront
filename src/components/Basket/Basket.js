@@ -6,7 +6,7 @@ import { Grid, Button, TextField, Paper } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { checkout, deleteOne } from "../../actions/purchases";
 import Modal from "@material-ui/core/Modal";
-import ThankYou from '../../assets/ThankYou.png';
+import ThankYou from "../../assets/ThankYou.png";
 import { useHistory, Redirect } from "react-router-dom";
 
 function Basket() {
@@ -21,6 +21,7 @@ function Basket() {
   const [purchaseDetails, setPurchaseDetails] = useState({
     name: "",
     number: "",
+    email: "",
     price: 0,
     items: basketItems,
   });
@@ -34,13 +35,20 @@ function Basket() {
 
   function makePurchase(e) {
     e.preventDefault();
-    dispatch(checkout(purchaseDetails));
-    clear();
+    if (
+      purchaseDetails.name != "" &&
+      purchaseDetails.number != "" &&
+      purchaseDetails.email != ""
+    ) {
+      dispatch(checkout(purchaseDetails));
+      clear();
+      handleOpen();
+    }
   }
 
   const calculatePrice = (basketItems) => {
     basketItems.map((item) => {
-      totalPrice += item.price;
+      totalPrice += ((100 - item.discount) / 100) * item.price;
     });
     setPurchaseDetails({ ...purchaseDetails, price: totalPrice });
   };
@@ -55,21 +63,21 @@ function Basket() {
     dispatch(deleteOne(itemIndx));
   }
 
-    /*--- MODAL */
-    const [open, setOpen] = React.useState(false);
+  /*--- MODAL */
+  const [open, setOpen] = React.useState(false);
 
-    const handleOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
-  
-    function closeModal() {
-      setOpen(false);
-    }
-    /*---------------*/
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function closeModal() {
+    setOpen(false);
+  }
+  /*---------------*/
 
   return (
     <div>
@@ -95,10 +103,16 @@ function Basket() {
               gridTemplateColumns: "4fr 1fr",
             }}
           >
-            <h3 style={{ marginTop: 0, marginBottom: 0 }}>Product</h3>
-            <h3 style={{ marginTop: 0, marginBottom: 0 }}>Price</h3>
+            <h3 style={{ marginTop: 0, marginBottom: 0 }}>Artikal</h3>
+            <h3 style={{ marginTop: 0, marginBottom: 0 }}>Cijena</h3>
           </div>
-          <hr style={{ border: "1px solid rgb(235, 235, 235)", marginLeft: 10, marginRight: 10 }}></hr>
+          <hr
+            style={{
+              border: "1px solid rgb(235, 235, 235)",
+              marginLeft: 10,
+              marginRight: 10,
+            }}
+          ></hr>
 
           {/* if notloaded then loader else map */}
           {basketItems.map((item, indx) => (
@@ -141,12 +155,17 @@ function Basket() {
                 </span>
               </span>
               <span style={{ display: "flex" }}>
-                <p style={{ paddingLeft: 5, paddingRight: 20 }}>{item.price}</p>
+                <p style={{ marginLeft: "-15px" }}>
+                  <del style={{ marginRight: 10, color: "#969696" }}>
+                    {item.price}KM
+                  </del>
+                  <span>{((100 - item.discount) / 100) * item.price}KM</span>
+                </p>
                 <DeleteIcon
                   onClick={() => removeItem(item, indx)}
                   style={{
                     marginTop: "0.5em",
-                    marginLeft: 70,
+                    marginLeft: 30,
                     color: "#8f0114",
                   }}
                 ></DeleteIcon>
@@ -158,9 +177,8 @@ function Basket() {
         <Grid>
           {/* <Paper className={classes.paper}> */}
           <form
-            style={{marginTop: 40, marginRight: 20}}
+            style={{ marginTop: 40, marginRight: 20 }}
             autoComplete="off"
-            noValidate
             onSubmit={makePurchase}
             className={`${classes.root} `}
           >
@@ -173,14 +191,13 @@ function Basket() {
                 borderBottom: "2px solid #ebebeb",
               }}
             >
-              Total price: {purchaseDetails.price}
+              Ukupna cijena: {purchaseDetails.price}
             </h1>
             <TextField
-            
               required
               name="name"
               variant="outlined"
-              label="Name"
+              label="Ime i prezime"
               fullWidth
               value={purchaseDetails.name}
               onChange={(e) =>
@@ -194,7 +211,7 @@ function Basket() {
               required
               name="number"
               variant="outlined"
-              label="Number"
+              label="Broj telefona"
               fullWidth
               value={purchaseDetails.number}
               onChange={(e) =>
@@ -209,52 +226,52 @@ function Basket() {
               name="number"
               variant="outlined"
               label="Email"
+              type="email"
               fullWidth
               value={null}
-              // onChange={(e) =>
-              //   setPurchaseDetails({
-              //     ...purchaseDetails,
-              //     number: e.target.value,
-              //   })
-              // }
+              onChange={(e) =>
+                setPurchaseDetails({
+                  ...purchaseDetails,
+                  email: e.target.value,
+                })
+              }
             />
             <Button
               color="primary"
               variant="contained"
               type="submit"
-              onClick={handleOpen}
               className={classes.buttonSubmit}
             >
-              PURCHASE
+              Završi kupovinu
             </Button>
           </form>
           {/* </Paper> */}
         </Grid>
       </Grid>
       {/* </Container> */}
-      <Modal 
-                  onClick={() => {
-                    history.push("/");
-                  }}
+      <Modal
+        onClick={() => {
+          history.push("/");
+        }}
         style={{
           width: "100wv",
           height: "100vh",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
         open={open}
         onClose={handleClose}
-      ><div>                  
-      <img
-        src={ThankYou}
-        style={{
-          alignSelf: "center",
-          width: "60vw",
-        }}
-    />
-</div>
-       
+      >
+        <div>
+          <img
+            src={ThankYou}
+            style={{
+              alignSelf: "center",
+              width: "60vw",
+            }}
+          />
+        </div>
       </Modal>
     </div>
   );

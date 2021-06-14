@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import useStyles from "./styles";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Checkbox,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
 
@@ -12,6 +18,8 @@ function Form() {
     name: "",
     price: 0,
     description: "",
+    discount: 0,
+    reservation: false,
     selectedFile: [],
   });
 
@@ -20,6 +28,8 @@ function Form() {
       name: "",
       price: 0,
       gender: "",
+      discount: 0,
+      reservation: false,
       description: "",
       selectedFile: [],
     });
@@ -109,7 +119,26 @@ function Form() {
           value={itemData.colors}
           onChange={(e) => setItemData({ ...itemData, colors: e.target.value })}
         />
-
+        <TextField
+          name="discount"
+          variant="outlined"
+          label="Discount"
+          fullWidth
+          value={itemData.discount}
+          onChange={(e) =>
+            setItemData({ ...itemData, discount: e.target.value })
+          }
+        />
+        <div>
+          Rezervacija:
+          <Checkbox
+            checked={itemData.reservation}
+            onChange={(e) =>
+              setItemData({ ...itemData, reservation: e.target.checked })
+            }
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+        </div>
         {/* <div className={classes.fileInput}><FileBase type="file" multiple={true} onDone={({ base64 }) => setItemData({ ...itemData, selectedFile: base64 })} /></div> */}
         <div className={classes.fileInput}>
           <FileBase

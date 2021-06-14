@@ -2,12 +2,11 @@ import React, { useState, useEffect, StyleSheet } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router-dom";
-
+import Badge from "@material-ui/core/Badge";
+import Typography from "@material-ui/core/Typography";
 
 import "./individualForm.css";
 import useStyles from "./styles";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Home from "@material-ui/icons/Home";
 
 import { addToBasket } from "../../../../actions/purchases";
 import { Button, Snackbar, Slide } from "@material-ui/core";
@@ -22,6 +21,7 @@ function IndividualForm({ item }) {
     size: "",
     color: "",
     price: item.price,
+    discount: item.discount,
   });
 
   const history = useHistory();
@@ -50,7 +50,6 @@ function IndividualForm({ item }) {
             }}
           >
             <div>Uspješno ste dodali artikal u korpu!</div>
-            
           </div>
         ),
         autoClose: 1000,
@@ -92,6 +91,14 @@ function IndividualForm({ item }) {
     if (orderData.size != "" && orderData.color != "") {
       try {
         dispatch(addToBasket(orderData));
+        setOrderData({
+          name: item.name,
+          image: item.selectedFile[0],
+          size: "",
+          color: "",
+          price: item.price,
+        });
+        clearStyle();
       } catch (error) {
         console.log(error);
       }
@@ -102,11 +109,11 @@ function IndividualForm({ item }) {
     if (orderData.size != "" && orderData.color != "") {
       try {
         dispatch(addToBasket(orderData));
-        history.push('/items/basket');
+        history.push("/items/basket");
       } catch (error) {
         console.log(error);
       }
-    } else{
+    } else {
       handleOpen();
     }
   }
@@ -127,54 +134,93 @@ function IndividualForm({ item }) {
     e.target.style.background = "#dbdbdb";
   }
 
+  function clearStyle() {
+    for (var i = 0; i < item.sizes.length; i++) {
+      var el = document.getElementById("size" + i);
+      el.style.background = "white";
+    }
+    for (var i = 0; i < item.colors.length; i++) {
+      var el = document.getElementById("color" + i);
+      el.style.background = "white";
+    }
+  }
+
   return (
     <div>
       <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <h1>{item.name}</h1>
-        <p>{item.description}</p>
-        {item.sizes.map((size, indx) => (
-          <span
-            style={{
-              marginTop: 10,
-              marginRight: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 5,
-              background: "white",
-              fontSize: 15,
-              borderBottom: "1px solid #031292",
-            }}
-            id={"size" + indx}
-            onClick={(e) => {
-              setOrderData({ ...orderData, size: size });
-              setSizeStyle(e, item.sizes.length);
-            }}
-          >
-            {size}
+        <h1 style={{ marginTop: 0, marginBottom: 10 }}>{item.name}</h1>
+        {item.discount > 0 ? (
+          <h3 style={{ marginTop: 0, marginBottom: 7 }}> -{item.discount}%</h3>
+        ) : (
+          ""
+        )}
+        {item.discount > 0 ? (
+          <div>
+            <del style={{ marginRight: 10, color: "#969696" }}>
+              {item.price}KM
+            </del>
+            <span style={{ fontSize: 20, fontWeight: "bold" }}>
+              {" "}
+              {((100 - item.discount) / 100) * item.price}KM
+            </span>
+          </div>
+        ) : (
+          <span style={{ fontSize: 20, fontWeight: "bold" }}>
+            {item.price}KM
           </span>
-        ))}
-        <div style={{ margin: 30 }}></div>
-        {item.colors.map((color, indx) => (
-          <span
-            style={{
-              marginTop: 10,
-              marginRight: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 5,
-              background: "white",
-              fontSize: 15,
-              borderBottom: "1px solid #031292",
-            }}
-            id={"color" + indx}
-            onClick={(e) => {
-              setOrderData({ ...orderData, color: color });
-              setColorStyle(e, item.colors.length);
-            }}
-          >
-            {color}
-          </span>
-        ))}
+        )}
+
+        <p style={{ maxHeight: "30vh", overflow: "auto" }}>
+          {item.description}
+        </p>
+
+        <div style={{ marginBottom: 30 }}>
+          {item.sizes.map((size, indx) => (
+            <span
+              style={{
+                marginRight: 10,
+                paddingTop: 5,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom: 5,
+                background: "white",
+                fontSize: 15,
+                borderBottom: "1px solid #031292",
+              }}
+              id={"size" + indx}
+              onClick={(e) => {
+                setOrderData({ ...orderData, size: size });
+                setSizeStyle(e, item.sizes.length);
+              }}
+            >
+              {size}
+            </span>
+          ))}
+        </div>
+        <div>
+          {item.colors.map((color, indx) => (
+            <span
+              style={{
+                marginTop: 10,
+                paddingTop: 5,
+                marginRight: 10,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom: 5,
+                background: "white",
+                fontSize: 15,
+                borderBottom: "1px solid #031292",
+              }}
+              id={"color" + indx}
+              onClick={(e) => {
+                setOrderData({ ...orderData, color: color });
+                setColorStyle(e, item.colors.length);
+              }}
+            >
+              {color}
+            </span>
+          ))}
+        </div>
         <div style={{ margin: 20 }}></div>
         <Button
           variant="contained"
@@ -184,20 +230,8 @@ function IndividualForm({ item }) {
           fullWidth
           onClick={handleOpen}
         >
-          Add to basket
+          Dodaj u korpu
         </Button>
-
-          <Button
-            onClick={(e)=> handleSubmitA(e) }
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            fullWidth
-            style={{ marginTop: 20, background: "#52b202" }}
-          >
-            Završi kupovinu
-          </Button>
       </form>
       <Snackbar
         anchorOrigin={message.position}
